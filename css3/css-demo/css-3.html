@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伪类选择器2  新特性</title>
+
+    <style type="text/css">
+        /* 初始化页面 */
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        /* 需清除浮动，外边框在ul横过来后未包裹 */
+        .clearfix{
+            clear: both;
+            /* 里面的内容能够撑开容器 */
+            overflow: auto;
+        }
+        .demo{
+            border: 1px solid grey;
+            margin: 10px 0 0 0;
+            width: 500px;
+            padding: 10px;
+        }
+        .demo li{
+          float: left;
+          list-style: none;
+          padding: 10px;
+          border: 1px solid grey;
+          margin-right: 10px;
+          width: 20px;
+        }
+
+        .demo a{
+            /* 设置才有用 */
+            display: block;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            border-radius: 10px;
+            background-color: hotpink;
+            text-decoration-line: none;
+        }
+
+        .demo li:nth-child(2n+1){
+            background-color: greenyellow;
+        }
+
+        /* 特定的元素li 里面包括其他元素也会算在中间 */
+        /* .demo li:nth-of-type(2n){
+            background-color: greenyellow;
+        } */
+    </style>
+
+</head>
+<body>
+    <div class="demo clearfix">
+        <ul class="clearfix">
+            <li><a href="">1</a></li>
+            <li><a href="">2</a></li>
+            <li><a href="">3</a></li>
+            <li><a href="">4</a></li>
+            <li><a href="">5</a></li>
+            <li><a href="">6</a></li>
+            <li><a href="">7</a></li>
+            <li><a href="">8</a></li>
+        </ul>
+    </div>
+
+    <div class="demo clearfix">
+        <ul class="clearfix">
+            <p></p>
+            <li><a href="">1</a></li>
+            <li><a href="">2</a></li>
+            <li><a href="">3</a></li>
+            <li><a href="">4</a></li>
+            <li><a href="">5</a></li>
+            <li><a href="">6</a></li>
+            <li><a href="">7</a></li>
+            <li><a href="">8</a></li>
+        </ul>
+    </div>
+</body>
+</html>

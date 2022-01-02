@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伪元素</title>
+    
+    <style type="text/css"> 
+         .demo{
+             width: 400px;
+             border: 1px solid gray; 
+             padding: 20px;
+         }
+
+         /* 伪元素 ::first-letter 第一个字 */
+         .demo::first-letter{
+             color: hotpink;
+             font-weight: bold;
+             font-size: 40px;
+             float: left;
+             padding-bottom: 0;
+             padding-right: 10px;
+         } 
+
+         /* 伪元素  ::first-line 第一行 */
+         .demo::first-line{
+             color: lawngreen;
+         }
+
+
+         .demo01{
+             width: 400px;
+             border: 1px solid grey;
+             text-align: center;
+             padding: 20px;
+             margin-top: 20px;
+         }
+
+         .demo01::before{
+            content: "before 数据";
+            /* 不浮动 */
+            display: block;
+         }
+
+         .demo01::after{
+           content: "after 数据";
+           display: block;
+         }
+    </style>
+</head>
+<body>
+    <div class="demo">
+        这种人没做过交易，只是从朋友那里听说，交易能赚大钱，
+        或者是书刊杂志上读了一些交易大师的成功学传记，然后就跟打了鸡血似的，
+        觉得自己也能和他们一样在金融市场赚到很多钱，这些人没有风控意识，
+        甚至感觉这个市场只会赚钱，
+        不会亏钱。于是他们就开户，然后一头扎进市场开始交易。
+    </div>
+
+    <div class="demo01">
+        中国富强之路
+    </div>
+</body>
+</html>

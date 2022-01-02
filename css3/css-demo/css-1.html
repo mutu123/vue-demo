@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <img src="https://img0.baidu.com/it/u=1578762854,2915076460&fm=26&fmt=auto" width="300px">
+    <style type="text/css">
+        body{
+            text-align: center;
+        }
+        img{
+            border-radius: 50%;
+            /* transition 过渡加载，一般加前缀适配不同浏览器 */
+            transition: all 0.5s;
+            /* cursor 鼠标变化 */
+            cursor: pointer;
+        }
+        /* hover伪类选择器，鼠标选中的时候 */
+        img:hover{
+            /* 缩放动画 */
+            transform: scale(1.1); 
+        }
+    </style>
+</body>
+</html>
