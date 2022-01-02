@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="../assets/js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<h2>Vue.extend构造器的延伸</h2>
+		<author></author>
+		
+		<!-- 一般使用这种 -->
+		<div id="author"></div>
+		
+		<script type="text/javascript">
+			var authorExtend = Vue.extend({
+				template:"<p><a :href='authorUrl'>{{authorName}}</a></p>",
+				data:function(){
+					return{
+						authorName:"jspang",
+						authorUrl:"http://www.baidu.com"
+					}
+				}
+			});
+			
+			//这时html中的标签还是不起作用的，因为扩展实例构造器是需要挂载的，我们再进行一次挂载。
+			new authorExtend().$mount('author')
+			new authorExtend().$mount('#author')
+		</script>
+	</body>
+</html>
