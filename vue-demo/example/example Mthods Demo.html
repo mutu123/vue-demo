@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="../assets/js/vue.js" type="text/javascript" charset="utf-8"></script>
+
+	</head>
+	<body>
+
+		<div class="app">
+			app
+		</div>
+
+		<div id="vm">
+			<jspang></jspang>
+		</div>
+		<p><button type="button" onclick="updated()">updated</button></p>
+		<p><button type="button" onclick="destroyed()">destroyed</button></p>
+		<p><button type="button" onclick="tick()">更新数据后调用tick</button></p>
+
+		<script type="text/javascript">
+			var app = new Vue({
+				el: '.app',
+				methods: {
+					add() {
+						console.log("调用add方法");
+					}
+				}
+			});
+
+			app.add()
+
+			// 扩展组件
+			var jspang = Vue.extend({
+				template: `<p>{{message}}</p>`,
+				data: function() {
+					return {
+						message: '123'
+					}
+				},
+				methods: {
+
+				},
+				created() {
+					console.log("生命周期 created ");
+				},
+				mounted() {
+					console.log("生命周期 mounted ");
+				},
+				updated() {
+					console.log("生命周期 updated ");
+				},
+				destroyed() {
+					console.log("生命周期 destroyed ");
+				}
+			});
+
+			var vm = new jspang().$mount('#vm');
+
+			function updated() {
+				vm.$forceUpdate()
+			}
+
+			function destroyed() {
+				vm.$destroy()
+			};
+			
+			function tick(){
+				vm.$nextTick(function(){
+					vm.message = " 更新数据 "
+					console.log("message 更新完成后我被调用了");
+				})
+			}
+		</script>
+	</body>
+</html>

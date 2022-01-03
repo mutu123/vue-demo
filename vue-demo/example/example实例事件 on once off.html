@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>example 实例事件</title>
+		<script src="../assets/js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+
+		<div id="app">
+			{{num}}
+			<p><button type="button" @click="add()">add</button></p>
+		</div>
+
+		<p><button type="button" onclick="reduce()">reduce</button></p>
+		<p><button type="button" onclick="addOnce()">addOnce</button></p>
+		<p><button type="button" onclick="off()">off</button></p>
+
+
+		<script type="text/javascript">
+			var app = new Vue({
+				el: "#app",
+				data: {
+					num: 0
+				},
+				methods: {
+					add() {
+						this.num++
+					}
+				}
+			})
+			
+			app.$on("reduce",function(){
+				this.num --
+			})
+			
+			app.$once("addOnce",function(){
+				this.num ++
+			})
+			
+			app.$off("reduce",function(){
+				console.log("------- reduce off-----");
+			})
+			
+			function reduce(){
+				app.$emit("reduce")
+			}
+			
+			function addOnce(){
+				app.$emit("addOnce")
+			}
+			
+			function off(){
+				app.$off("reduce")
+			}
+			
+		</script>
+	</body>
+</html>

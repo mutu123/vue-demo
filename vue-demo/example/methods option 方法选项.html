@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>methods option 方法选项</title>
+		<script src="../assets/js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+
+		<div id="app">
+			<p>{{count}}</p>
+
+			<!-- $event 鼠标点击的位置，等一系列参数，用于交互 -->
+			<p><button type="button" @click="add(1,$event)">add</button></p>
+			<!-- 自定义组件，点击需要加.native 表示可以调用vue的原生方法 -->
+			<p>
+				<btn @click.native="add()"></btn>
+			</p>
+		</div>
+
+		<!-- vue作用域外的组件，需要使用onclick 并且调用app对象调用add的方法 -->
+		<p><button type="button" onclick="app.add(2)">外部add</button></p>
+
+		<script type="text/javascript">
+			var btn = {
+				template: `<button>自定义组件</button>`,
+			}
+
+			var app = new Vue({
+				el: "#app",
+				data: {
+					count: 0
+				},
+				components: {
+					'btn': btn
+				},
+				methods: {
+					add(num, event) {
+						if (num != "") {
+							this.count += num
+						} else {
+							this.count++
+						}
+						console.log(event);
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
