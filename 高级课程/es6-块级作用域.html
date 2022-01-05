@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <ul>
+        <li>列表1</li>
+    </ul>
+
+    <script>
+
+      {
+          let list = document.querySelectorAll("li")
+          for(let i = 0;i < list.length;i++){
+              list[i].onclick = function(){
+                  console.log(i)
+              }
+          }
+      }
+
+      //对象结构赋值，
+    //   let obj = {
+    //       a:1,
+    //       b:2,
+    //       c:4,
+    //       d:3
+    //   }
+       
+      //let a = obj.a;
+      //let b = obj.b;
+      //let c = obj.c;
+    //   let {a,c,b} = obj;
+    //   console.log(a,b,c)
+
+      //数组结构赋值,一一对应
+    //   let arr =["a","b","c"]
+    //   let [e,f] = arr
+    //   console.log(e,f);
+
+      let a = 0;
+      let b = 1;
+
+      // let c = 0;
+      // c = a;
+      // a = b;
+      // b = c;
+    [a,b] = [b,a]
+    console.log(a,b)
+      
+      
+
+    </script>
+    
+</body>
+</html>
