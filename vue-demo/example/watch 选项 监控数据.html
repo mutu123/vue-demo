@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>watch 选项 监控数据</title>
+		<script src="../assets/js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<h2>watch 选项 监控数据</h2>
+		<hr>
+		<div id="app">
+			<p>今天的温度是 {{newWenDu}}°</p>
+			<p>建议穿衣指数: {{chuangyi}}</p>
+			<p><button type="button" @click="add()">温度上升5</button>
+				<button type="button" @click="edd()">温度下降5</button>
+			</p>
+		</div>
+
+		<script type="text/javascript">
+		    
+			var listData = [
+						"穿毛衣","穿短袖","穿大衣","裸奔"
+					]
+		    
+			var app = new Vue({
+				el: "#app",
+				data: {
+					wendu: 24,
+					chuangyi: "",
+					
+				},
+				methods: {
+					add() {
+						this.wendu += 5
+					},
+					edd() {
+						this.wendu -= 5
+					},
+					changeWenDu(newValue){
+						if(newValue < 1){
+							this.chuangyi = listData[2]
+						} else if(newValue >1 && newValue < 20){
+							this.chuangyi = listData[0]
+						} else if(newValue >=20 && newValue < 30){
+							this.chuangyi = listData[1]
+						} else {
+							this.chuangyi = listData[3]
+						}	
+					}
+				},
+				computed:{
+					newWenDu(){
+						var newValue = this.wendu
+						this.changeWenDu(newValue)
+						return newValue
+					}
+				},
+				// watch: {
+    //                 wendu(newValue,oldValue){
+				// 		console.log("new"+ newValue);
+				// 		console.log("olde"+ oldValue);
+				// 		this.changeWenDu(newValue)
+				// 	}
+				// }
+			});
+			
+			app.$watch('wendu',function(newValue,oldValue){
+				console.log("new"+ newValue);
+				console.log("olde"+ oldValue);
+				this.changeWenDu(newValue)
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>computed option 计算选项</title>
+		<script src="../assets/js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		
+		<h2>computed option 计算选项</h2>
+		<hr >
+		
+		<div id="app">
+		    <p>{{newPrice}}</p>	
+		    
+			<p>
+				<ul v-for="item in newListData">
+					<ul>{{item.titel}}--{{item.data}}</ul>
+				</ul>
+			</p>
+			 
+		</div>
+		
+		<script type="text/javascript">
+			var app = new Vue({
+				el:"#app",
+				data:{
+					price:100,
+					listData:[
+						{"titel":"床前明月光","data":"1"},
+						{"titel":"疑是地上霜","data":"2"},
+						{"titel":"举头望明月","data":"3"},
+						{"titel":"低头思故乡","data":"4"},
+					]
+				},
+				computed:{
+					newPrice(){
+						return "￥"+ this.price + " 元"
+					},
+					newListData(){
+						return this.listData.reverse()
+					}
+				}
+			})
+		</script>
+		
+	</body>
+</html>

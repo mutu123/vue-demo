@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>extends 扩展选项</title>
+		<script src="../assets/js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		
+		<h2>extends 扩展选项</h2>
+		<hr>
+		<div id="app">
+			${count}
+			<button type="button" @click="add()">add</button>
+		</div>
+		
+		<script type="text/javascript">
+		    var CompA = {
+				methods:{
+					add(){
+						console.log("我自定义父类的add")
+					}
+				}
+			}  
+		
+			var vm = new Vue({
+				el:'#app',
+				data:{
+					count:1
+				},
+				methods:{
+					add2(){
+						console.log("我是子类组件的add")
+					}
+				},
+				delimiters:['${','}'],
+				extends:CompA
+				
+			})
+		</script>
+	</body>
+</html>
