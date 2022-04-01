@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原型</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    /**
+     * 原型是什么？
+     * 每一个对象都有它的原型对象，他可以使用自己原型对象上的所有属性和方法
+     * 
+     * 
+     */
+
+    let cat = {
+        name: "miaomao"
+    }
+
+    cat.__proto__.eat = function(){
+        console.log("爱吃鱼");
+    }
+
+    cat.eat()
+
+    /**
+     * 获取原型的方法：
+     * 1:  是通过对象的__proto__ 获取
+     * 2:  是通过构造函数的prototype 属性拿到原型
+     * 
+     */ 
+
+    //面试题： 构造函数中的this 指向谁？
+    //指向new 创建的对象
+    function Car(name,age){
+        this.name = name;
+        this.age = age;
+    }
+     
+    let car = new Car("miaomiao",2);
+    Car.prototype.eat = function(){
+        console.log("爱吃肉");
+    }
+    car.eat()
+
+    /**
+     * 原型对象有什么用？
+     * 可以扩展对象
+     * 
+     * ex:这里想要输出一个2020年1月1日  这样的格式，就可以自己扩展对象，给Date扩展一个formate的格式
+     */ 
+    let date = new Date()
+    
+    Date.prototype.formate = function(){
+        let year = this.getFullYear();
+        let month = this.getMonth() + 1
+        let date = this.getDate();
+        return `${year}年${month}月${date}日`
+    }
+
+    console.log(date.formate());
+
+</script>
+
+</html>
