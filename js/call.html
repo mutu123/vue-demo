@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    Function.prototype.myCall = function(ctx,...arg){
+       ctx = ctx || window
+       ctx.fn = this
+    //    let arg = [...arguments].slice(1)
+       console.log("arg",...arg);
+       let result = fn(...arg) 
+       delete fn
+       return result
+   }
+
+   Function.prototype.myApply = function(ctx,arr){
+       ctx = ctx || window
+       ctx.fn = this
+       let result 
+       
+       if(arr){
+         fn(...arr)
+       } else {
+         fn()
+       }
+       return result
+   }
+
+
+
+    var name = "外部"
+    let fun = {
+        name:"内部",
+        fa:function(){
+            let that = this
+            setTimeout(function(){
+                console.log(this.name);
+            }, 100);
+        },
+        fn: function(a, b){
+            console.log(a+b);
+        }
+    }
+
+//     let fa = fun.fa()
+
+   let fn = fun.fn
+   fn.call(fun,1,2)
+   fn.apply(fun,[1,2])
+   fn.bind(fun,1,2)()
+
+   fn.myCall(fun,1)
+   fn.myApply(fun,[1,2])
+
+   
+
+ 
+
+</script>
+</html>

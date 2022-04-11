@@ -32,8 +32,8 @@
     /**
      * 获取原型的方法：
      * 1:  是通过对象的__proto__ 获取
-     * 2:  是通过构造函数的prototype 属性拿到原型
-     * 
+     * 2:  funcation是通过构造函数（方法名）的prototype 属性拿到原型 funcation.prototype
+     * 3:  class是通过构造函数（类名）的prototype 属性拿到原型  Class.prototype
      */ 
 
     //面试题： 构造函数中的this 指向谁？
@@ -56,7 +56,7 @@
      * ex:这里想要输出一个2020年1月1日  这样的格式，就可以自己扩展对象，给Date扩展一个formate的格式
      */ 
     let date = new Date()
-    
+
     Date.prototype.formate = function(){
         let year = this.getFullYear();
         let month = this.getMonth() + 1
@@ -66,6 +66,16 @@
 
     console.log(date.formate());
 
+
+    class Made {
+        constructor() {
+        }
+    }
+    let made = new Made()
+    Made.prototype.eat = function () {
+        console.log("made 爱吃肉 ")
+    }
+    made.eat()
 </script>
 
 </html>

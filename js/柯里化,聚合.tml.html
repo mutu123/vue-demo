@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+</body>
+<script>
+
+    /**
+     * 函数式编程 2 大特性：
+     * 1： 集合  ： 一个值需要经过多个函数，就可以把所有中间步骤合并成一个函数
+     *
+     *
+     * 2： 柯里化
+     */
+
+    function f1(arg){
+        console.log("f1",arg)
+        return arg
+    }
+
+    function f2(arg){
+        console.log("f2",arg)
+        return arg
+    }
+
+    function f3(arg){
+        console.log("f3",arg)
+        return arg
+    }
+
+    function compose(...funcs){
+        if(funcs.length === 0){
+            return (arg)=>arg
+        }
+
+        if(funcs.length === 1){
+            return funcs[0]
+        }
+
+        return funcs.reduce((a,b)=>(...args)=> a(b(...args)))
+        // return funcs.reduce(mun)
+    }
+
+    // function mun(a,b){
+    //     return function (...args){
+    //         return function a(b(...args)){
+    //         }
+    //     }
+    // }
+
+    function b(...args){
+        return args
+    }
+
+    let res  = compose(f1,f2,f3)("omg")
+    console.log("res",res)
+</script>
+</html>
