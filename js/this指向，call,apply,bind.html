@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>this指向，call,apply,bind</title>
+</head>
+<body>
+    
+</body>
+<script>
+    //默认绑定: this指向全局
+    function girl(){
+        console.log(this);
+    }
+
+    girl();
+
+    //隐形绑定
+    let girl2= {
+        name: "小红",
+        detail: function(){
+            console.log(this.name);
+        }
+    }
+
+    girl2.detail();
+
+    //硬绑定：切换this指针
+    let girlName = {
+        name:"小红",
+        sayName: function(){
+            console.log(this.name);
+        }
+    }
+    let girL3 = {
+        name: "小白"
+    }
+    let girl4 = {
+        name: "小黄"
+    }
+    girlName.sayName.call(girL3)
+    girlName.sayName.apply(girl4)
+
+
+    //构造函数绑定
+    function Lover(name){
+        this.name = name
+        this.sayName = function(){
+            console.log("我的么子是:",this.name);
+        }
+    }
+    var name1 = "小白"
+    let xiaoHong = new Lover("小红")
+    xiaoHong.sayName();
+
+
+    //训练
+    let name = "小红"
+    function a(){
+        let name = "小白"
+        console.log(this.name);
+    }
+    function d(i){
+        return i();
+    }
+    let b = {
+        name:"小黄",
+        detail:function(){
+            console.log(this.name);
+        },
+        bibi:function(){
+            return function(){
+                console.log(this.name);
+            }
+        }
+    }
+    let c = b.detail;
+    b.a = a;
+    let e = b.bibi();
+    a();
+    c();
+    b.a();
+    d(b.detail);
+    e();
+
+
+    /**
+     * this 指针 ES5中 指向的是调用它的对象
+     */ 
+    let code = "2323"
+    function func(){
+        let code = "123"
+        console.log(this);
+    }
+
+    // bounFunc = func.bind(1)
+    func()
+
+
+    Function.prototype.myCall = function(ctx){
+        ctx = ctx || window
+        ctx.fn = this
+        let arg = [...arguments].slice(1)
+        console.log(arguments);
+        console.log(...arg);
+        let result = ctx.fn(...arg)
+        delete ctx.fn
+        return result
+    }
+
+    Function.prototype.myApplay = function(ctx,arr){
+        ctx = ctx || window
+        ctx.fn = this
+        let result
+        if(arr){
+            result = ctx.fn(...arr)
+        } else {
+            result = ctx.fn()
+        }
+        delete ctx.fn
+        return result
+    }
+
+    var fun = {
+        name:"外部",
+        fn:function(a,b){
+            let name = "内部"
+            console.log(this.name);
+            console.log(a+b);
+        }
+    }
+
+    let funn = fun.fn
+    funn.call(fun,1,2)
+    funn.apply(fun,[1,2])
+    funn.bind(fun,1,2)()
+    funn.myCall(fun,1,2)
+    // funn.myApplay(fun)
+    funn.call()
+
+</script>
+</html>

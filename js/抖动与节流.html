@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            width: 100px;
+            height: 100px;
+            background-color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <input placeholder="请输入电话">
+    <div class="box"></div>
+    <script>
+        /**
+         * 防抖（debounce） => 将多次操作变成一次
+         * 事件被触发N秒后再执行回调，如果在这n秒内又被触发，则重新计时。
+         * 
+         */
+        let telInput = document.querySelector('input')
+        telInput.addEventListener('input',antiShake(demo,2000))
+
+        //防抖封装
+        function antiShake(fn, wait){
+            let timeOut = null;
+            return ()=>{
+                if(timeOut) clearTimeout(timeOut)
+                timeOut = setTimeout(fn, wait);
+            }
+        }
+
+        function demo(){
+            console.log("发起请求",telInput.value);
+        }
+
+
+        /**
+         * 节流 => 单位时间内只调用一次
+         * 应用场景： 1: 表单防止多次提交
+         *           2: 高频监听事件
+         */ 
+        let box = document.querySelector(".box")
+        box.addEventListener("touchmove",move(touchMoveFu,2000))
+
+        function move(event,wait){
+            let timeOut = null
+            return ()=>{
+                if(!timeOut){
+                    timeOut = setTimeout(() => {
+                    event();
+                    timeOut = null
+                }, wait);
+              }
+            }
+        }
+
+        function touchMoveFu(){
+            console.log("移动事件。。。");
+        }
+
+    </script>
+</body>
+
+</html>
