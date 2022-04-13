@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建对象的方式</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    //1.工厂模式
+    function Person() {
+        let o = new Object();
+        o.name = 'hanmeimei'
+        o.say = function () {
+            alert(this.name)
+        }
+        return o;
+    }
+    let person = Person()
+
+    // 2.构造函数模式: 不用new 创建，默认隐式返回this,指向window,元素挂载在window全局对象上
+    function Person(){
+        console.log("this,",this);
+        this.name = "hamaeimeri";
+        this.say = function(){
+            alert(this.name)
+        }
+    }
+    var person1 = new Person()
+    console.log(person1.name);
+
+    // 3.原型模式
+    function Person(){}
+    Person.prototype.name = "原型模式"
+    Person.prototype.say = function(){
+        alert(this.name)
+    }
+    let person2 = new Person()
+    console.log(person2.name);
+
+    // 4.构造函数和原型组合模式
+    
+    // 5.动态原型模式
+    // 6.寄生构造模式
+    // 7.稳妥构造模式
+</script>
+
+</html>
