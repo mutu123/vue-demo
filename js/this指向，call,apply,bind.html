@@ -123,6 +123,16 @@
         return result
     }
 
+    Function.prototype.myBind = function(ctx,...arg){
+        ctx = ctx || window
+        ctx.fn = this
+        let result = function(){
+            ctx.fn(...arg)
+        }
+
+        return result
+    }
+
     var fun = {
         name:"外部",
         fn:function(a,b){
@@ -133,12 +143,15 @@
     }
 
     let funn = fun.fn
+
     funn.call(fun,1,2)
     funn.apply(fun,[1,2])
     funn.bind(fun,1,2)()
+
     funn.myCall(fun,1,2)
-    // funn.myApplay(fun)
-    funn.call()
+    funn.myApplay(fun)
+    funn.myBind(fun,5,4)()
+
 
 </script>
 </html>

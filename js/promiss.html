@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    //基本结构
+    function myPromise(executor) {
+        let self = this;
+        self.status = 'pending'; //状态
+        self.value = null; //成功的结果
+        self.reason = null; //失败的原因
+
+        //5. 发布订阅模式，存放触发方法容器
+        self.onFulfilledCallbacks = []
+        self.onRejectedCallbacks = []
+
+        // //1. 成功的结果
+        function resolve(value) {
+            // console.log("resolve value:", value);
+            //3.状态判断
+            if (self.status === "pending") {
+                self.value = value
+                self.status = "fulfilled"
+                //5. 发布
+                self.onFulfilledCallbacks.forEach(item => {
+                    item(self.value)
+                })
+            }
+        }
+
+        // //2. 失败的结果
+        function reject(reason) {
+            console.log("reject", reason);
+            if (self.status === "pending") {
+                self.reason = reason;
+                self.status = "rejected"
+                console.log("reject onRejectedCallbacks", self.onRejectedCallbacks);
+                self.onRejectedCallbacks.forEach(item => {
+                    console.log("reject fn", reason);
+                    item(self.value)
+                })
+            }
+        }
+
+        //1.5 实例化之后 必须立即执行一遍
+        try {
+            executor(resolve, reject);
+        } catch (error) {
+            reject(err)
+        }
+    }
+
+
+    // .then()
+    myPromise.prototype.then = function (onFulfilled, onRejected) {
+
+        //4. 直接执行，不考虑链式调用
+        if (onFulfilled) {
+            onFulfilled = typeof onFulfilled === "function" ?
+                onFulfilled : function (data) { }
+        }
+
+        if (onRejected) {
+            onRejected = typeof onRejected === "function" ?
+                onRejected : function (err) { throw err }
+        }
+
+        //6. 状态为pending 放进去
+        let self = this
+        // if (self.status === "pending") {
+        //     self.onFulfilledCallbacks.push(onFulfilled)
+        //     self.onRejectedCallbacks.push(onRejected)
+        // }
+
+        // return
+        console.log("then status " + self.status);
+
+        //8. 链式调用
+        if (self.status === 'fulfilled') {
+            return new myPromise((resolve, reject) => {
+                try {
+                    //这里做istanceof 判断：then传入的参数onFulfilled是否为一个promise
+                    //是：就得去执行这个一步；否：直接执行方法
+                    let x = onFulfilled(self.value)
+                    x instanceof myPromise ? x.then(resolve, reject)
+                        : resolve(x)
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        }
+        if (self.status === 'rejected') {
+            return new myPromise((resolve, reject) => {
+                try {
+                    let x = onRejected(self.value)
+                    x instanceof myPromise ? x.then(resolve, reject)
+                        : resolve(x)
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        }
+        if (self.status === "pending") {
+            return new myPromise((resolve, reject) => {
+                console.log("reytn ");
+                if (onFulfilled) {
+                    self.onFulfilledCallbacks.push(() => {
+                        let x = onFulfilled(self.value)
+                        console.log("x ful: ",x);
+                        x instanceof myPromise ? x.then(resolve, reject) : resolve(x)
+                    })
+                }
+
+                if (onRejected) {
+                    console.log("------------");
+                    self.onRejectedCallbacks.push(() => {
+                        console.log("diaoyon ");
+                        let x = onRejected(self.reason)
+                        console.log(x);
+                        x instanceof myPromise ? x.then(resolve, reject) : reject(x)
+                    })
+                    console.log("reject, " ,self.onRejectedCallbacks);
+                }
+            })
+        }
+    }
+
+    //9. catch()
+    myPromise.prototype.catch = function (fn) {
+       return this.then(null, fn)
+    }
+
+    let demo = new myPromise((resolve, reject) => {
+        console.log("666");
+
+        setTimeout(() => {
+            // resolve(123)
+            reject("eerrrrr")
+        }, 500);
+    });
+
+
+   
+
+    // demo.then(data => {
+    //     console.log("data", data);
+    // }).catch(err => {
+    //     console.log("err", err);
+    // })
+
+    //  demo.catch(err =>{
+    //      console.log("err",err);
+    //  })
+
+
+    let isForget = true;
+    let getLv = new myPromise((resolve,reject)=>{
+        if(isForget){
+            let lv = {
+                color:"orange",
+                price:"$99"
+            };
+            // 得到包包
+            resolve(lv);
+        } else {
+            let err = new Error('加班去了，wanji');
+            reject(err)
+        }
+    })
+
+    //链式调用
+    let buyLip = lv => {
+        let lip = {
+            brand:"我你猜",
+            color:"pink"   
+        }
+        let msg = {
+            message:"我买的口红是" +lip.brand + lip.color +"搭配我的" + lv.color,
+            lip: lip,
+            lv: lv
+        }
+        return new myPromise(function(y,n){
+            y(msg)
+        })
+    }
+
+    let testFn2 = ()=>{
+        getLv.then(buyLip).then(fulfilled=>{
+            console.log(fulfilled);
+        }).catch(rejected=>{
+            console.log(rejected);
+        })
+    }
+
+    testFn2()
+
+</script>
+
+</html>
