@@ -14,19 +14,78 @@
 
 <script>
 
-    function fn() {
-        let name = 1
+    /**
+     *   主线程任务完成后(一个任务执行完成后，script也是一个宏任务)，会先去微任务队列查询是否有任务，有则执行，直达微任务队列到空；
+     *   然后再取微任务队列查询是否有任务，有则执行；
+     *
+     *   宏任务与微任务是保持各自独立的队列；
+     */
 
-        function newFn() {
-             name = 3
-        }
-        newFn()
+    /**
+     *  事件循环 Event Loop: 浏览器为了协调事件处理、脚本执行、网络请求和渲染等任务而制定的工作机制；
+     *
+     *  宏任务（Tasks）：
+     *      代表一个个离散的、独立的工作单元。
+     *      浏览器完成一个宏任务，在下一个宏任务执行开始前，会对页面进行重新渲染。
+     *      主要包括创建文档对象、解析HTML、执行主线JS 代码以及各种事件如：页面加载、输入、网络事件和定时器等。
+     *
+     *  script（可以理解为外层同步代码）
+     *  setTimeout/setInterval
+     *  UI rendering/UI 事件
+     *  postMessage、MessageChannel
+     *  setImmediate、I/O (Node.js)
+     *
+     *  微任务（Microtasks）：
+     *      微任务是更小的任务，是在当前宏任务执行结束后立即执行的任务。
+     *      如果存在微任务，浏览器会清空微任务之后再重新渲染。
+     *
+     *  Proimise.then 回调函数
+     *  MutaionObserver
+     *  Object.observe(已废弃；Proxy 对象替代)
+     *  process。nextTick (Node.js)
+     */
+
+    function sn(){
+        console.log("主线程打印");
+
+        setTimeout(() => {
+            console.log("setTimeout");
+        }, 0);
+
+        //内部使用 queueMicrotask 微任务
+        new Promise((resolve,reject)=>{
+            console.log("new promise");
+            resolve()
+        }).then(()=>{
+            console.log("then");
+        })
+
+        console.log("end");
+
+        //加入微任务
+        queueMicrotask(()=>{
+            console.log("queueMicrotask")
+        })
     }
 
-    let sm = fn()
+    sn()
 
-    console.log(sm);
+    async function fn1(){
+        console.log(1)
+        await fn2()
+        console.log(2)  //await 后面的代码会阻塞（即加入微队列）
+    }
 
+    function fn2(){
+        new Promise((resolve,reject)=>{
+            console.log("new promise");
+            resolve()
+        }).then(()=>{
+            console.log("then");//先加入到微任务队列
+        })
+    }
+    fn1()
+    console.log(3)
 
 </script>
 
