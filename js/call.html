@@ -15,8 +15,8 @@
        ctx.fn = this
     //    let arg = [...arguments].slice(1)
        console.log("arg",...arg);
-       let result = fn(...arg) 
-       delete fn
+       let result = ctx.fn(...arg) 
+       delete ctx.fn
        return result
    }
 
@@ -26,9 +26,9 @@
        let result 
        
        if(arr){
-         fn(...arr)
+        ctx.fn(...arr)
        } else {
-         fn()
+        ctx.fn()
        }
        return result
    }
@@ -44,20 +44,20 @@
                 console.log(this.name);
             }, 100);
         },
-        fn: function(a, b){
+        fna: function(a, b){
             console.log(a+b);
         }
     }
 
 //     let fa = fun.fa()
 
-   let fn = fun.fn
-   fn.call(fun,1,2)
-   fn.apply(fun,[1,2])
-   fn.bind(fun,1,2)()
+   let fna = fun.fna
+   fna.call(fun,1,2)
+   fna.apply(fun,[1,2])
+   fna.bind(fun,1,2)()
 
-   fn.myCall(fun,1)
-   fn.myApply(fun,[1,2])
+   fna.myCall(fun,1)
+   fna.myApply(fun,[1,2])
 
    
 

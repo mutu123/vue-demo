@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>this指向，call,apply,bind</title>
 </head>
+
 <body>
-    
+
 </body>
 <script>
     //默认绑定: this指向全局
-    function girl(){
+    function girl() {
         console.log(this);
     }
 
     girl();
 
     //隐形绑定
-    let girl2= {
+    let girl2 = {
         name: "小红",
-        detail: function(){
+        detail: function () {
             console.log(this.name);
         }
     }
@@ -29,8 +31,8 @@
 
     //硬绑定：切换this指针
     let girlName = {
-        name:"小红",
-        sayName: function(){
+        name: "小红",
+        sayName: function () {
             console.log(this.name);
         }
     }
@@ -45,10 +47,10 @@
 
 
     //构造函数绑定
-    function Lover(name){
+    function Lover(name) {
         this.name = name
-        this.sayName = function(){
-            console.log("我的么子是:",this.name);
+        this.sayName = function () {
+            console.log("我的么子是:", this.name);
         }
     }
     var name1 = "小白"
@@ -58,20 +60,20 @@
 
     //训练
     let name = "小红"
-    function a(){
+    function a() {
         let name = "小白"
         console.log(this.name);
     }
-    function d(i){
+    function d(i) {
         return i();
     }
     let b = {
-        name:"小黄",
-        detail:function(){
+        name: "小黄",
+        detail: function () {
             console.log(this.name);
         },
-        bibi:function(){
-            return function(){
+        bibi: function () {
+            return function () {
                 console.log(this.name);
             }
         }
@@ -88,9 +90,9 @@
 
     /**
      * this 指针 ES5中 指向的是调用它的对象
-     */ 
+     */
     let code = "2323"
-    function func(){
+    function func() {
         let code = "123"
         console.log(this);
     }
@@ -99,7 +101,7 @@
     func()
 
 
-    Function.prototype.myCall = function(ctx){
+    Function.prototype.myCall = function (ctx) {
         ctx = ctx || window
         ctx.fn = this
         let arg = [...arguments].slice(1)
@@ -110,11 +112,11 @@
         return result
     }
 
-    Function.prototype.myApplay = function(ctx,arr){
+    Function.prototype.myApplay = function (ctx, arr) {
         ctx = ctx || window
         ctx.fn = this
         let result
-        if(arr){
+        if (arr) {
             result = ctx.fn(...arr)
         } else {
             result = ctx.fn()
@@ -123,35 +125,35 @@
         return result
     }
 
-    Function.prototype.myBind = function(ctx,...arg){
+    Function.prototype.myBind = function (ctx, ...arg) {
         ctx = ctx || window
         ctx.fn = this
-        let result = function(){
+        return function () {
             ctx.fn(...arg)
+            delete ctx.fn
         }
-
-        return result
     }
 
     var fun = {
-        name:"外部",
-        fn:function(a,b){
-            let name = "内部"
-            console.log(this.name);
-            console.log(a+b);
+        // name:"外部",
+        fnadd: function (a, b) {
+            // let name = "内部"
+            // console.log(this.name);
+            console.log(a + b);
         }
     }
 
-    let funn = fun.fn
+    let funn = fun.fnadd
 
-    funn.call(fun,1,2)
-    funn.apply(fun,[1,2])
-    funn.bind(fun,1,2)()
+    funn.call(fun, 1, 2)
+    funn.apply(fun, [1, 2])
+    funn.bind(fun, 1, 2)()
 
-    funn.myCall(fun,1,2)
+    funn.myCall(fun, 1, 2)
     funn.myApplay(fun)
-    funn.myBind(fun,5,4)()
+    funn.myBind(fun, 5, 4)()
 
 
 </script>
+
 </html>
