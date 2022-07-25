@@ -32,11 +32,11 @@ console.log(`obj1: ${obj1.name}`);
 let name1 = {name:"小米"}
 let name2 = {...name1}
 name2.name = "小红"
-console.log("name1:",name1,"name2:",name2);
+console.log("name1:",name1,"name2:",name2);// 小米，小红
 
 const fxArr = ["One", "Two", "Three"]
 const fxArrs = [...fxArr]
-// fxArrs[1] = "love";
+fxArrs[1] = "love";
 console.log(fxArr) // ["One", "Two", "Three"]
 console.log(fxArrs) // ["One", "love", "Three"]
 console.log(fxArr == fxArrs);

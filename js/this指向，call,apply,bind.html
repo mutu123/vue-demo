@@ -12,51 +12,50 @@
 
 </body>
 <script>
-    //默认绑定: this指向全局
-    function girl() {
-        console.log(this);
-    }
+    // //默认绑定: this指向全局
+    // function girl() {
+    //     console.log(this);
+    // }
 
-    girl();
+    // girl();
 
-    //隐形绑定
-    let girl2 = {
-        name: "小红",
-        detail: function () {
-            console.log(this.name);
-        }
-    }
+    // //隐形绑定
+    // let girl2 = {
+    //     name: "小红",
+    //     detail: function () {
+    //         console.log(this.name);
+    //     }
+    // }
 
-    girl2.detail();
+    // girl2.detail();
 
-    //硬绑定：切换this指针
-    let girlName = {
-        name: "小红",
-        sayName: function () {
-            console.log(this.name);
-        }
-    }
-    let girL3 = {
-        name: "小白"
-    }
-    let girl4 = {
-        name: "小黄"
-    }
-    girlName.sayName.call(girL3)
-    girlName.sayName.apply(girl4)
+    // //硬绑定：切换this指针
+    // let girlName = {
+    //     name: "小红",
+    //     sayName: function () {
+    //         console.log(this.name);
+    //     }
+    // }
+    // let girL3 = {
+    //     name: "小白"
+    // }
+    // let girl4 = {
+    //     name: "小黄"
+    // }
+    // girlName.sayName.call(girL3)
+    // girlName.sayName.apply(girl4)
 
 
-    //构造函数绑定
-    function Lover(name) {
-        this.name = name
-        this.sayName = function () {
-            console.log("我的么子是:", this.name);
-        }
-    }
-    var name1 = "小白"
-    let xiaoHong = new Lover("小红")
-    xiaoHong.sayName();
-
+    // //构造函数绑定
+    // function Lover(name) {
+    //     this.name = name
+    //     this.sayName = function () {
+    //         console.log("我的么子是:", this.name);
+    //     }
+    // }
+    // var name1 = "小白"
+    // let xiaoHong = new Lover("小红")
+    // xiaoHong.sayName();
 
     //训练
     let name = "小红"
@@ -81,11 +80,11 @@
     let c = b.detail;
     b.a = a;
     let e = b.bibi();
-    a();
-    c();
-    b.a();
-    d(b.detail);
-    e();
+    a();//小红
+    c();//  小红
+    b.a();//小黄
+    d(b.detail);// 小红
+    e();//小红
 
 
     /**

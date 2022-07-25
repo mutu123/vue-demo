@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .parent {
+            width: 400px;
+            height: 400px;
+            background-color: antiquewhite;
+        }
+
+        .parent:hover .child {
+            display: block;
+
+        }
+
+        .child {
+            display: none;
+            width: 200px;
+            height: 200px;
+            background-color: aqua;
+
+            animation:all 1s;
+        }
+
+        @keyframes child {
+            /*设置内容由显示变为隐藏*/
+
+            0% {
+                opacity: 0;
+            }
+
+            /* 50% {
+                opacity: 0;
+            } */
+
+            100% {
+                opacity: 1;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="child"></div>
+    </div>
+
+</body>
+
+<script>
+
+    function add() {
+        let count = 0
+        while (count < 10) {
+            if (count < 5) {
+                console.log("coutn < 5", count);
+                count++
+                continue
+            }
+            count = count + 1
+
+            console.log("out count", count);
+        }
+    }
+
+    add();
+
+
+</script>
+
+
+</html>

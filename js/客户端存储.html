@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户端存储</title>
+</head>
+
+<body>
+    <form>
+        用户名:<input type="username" placeholder="请输入用户名" /><br />
+
+        密码:<input type="password" placeholder="请输入密码"><br />
+
+        <input type="checkbox" name="" id="" value="">记住我</input><br />
+        <input class="btn" type="submit" value="提交" />
+    </form>
+
+    <button class="local">存储localStorage</button>
+    <button class="session">存储sessionStorage</button>
+</body>
+
+<script>
+    const username = document.querySelector('input[type="username"]')
+    const userpassword = document.querySelector('input[type="password"]')
+    const checkbox = document.querySelector('input[type="checkbox"]')
+    const submit = document.querySelector('.btn')
+
+    console.log(document.cookie);
+    let arr = document.cookie.split('; ').map(item => item.split('='))
+
+    console.log(`arr ${arr}`);
+
+    let cookie = {}
+    for (let i = 0; i < arr.length; i++) {
+        let name = arr[i][0]
+        let value = arr[i][1]
+        cookie[name] = decodeURIComponent(value)
+    }
+
+    console.log("cookie", cookie);
+    if(cookie.yourname){
+        username.value = cookie.yourname
+        checkbox.checked = true
+    }
+
+
+    submit.addEventListener('click', e => {
+        console.log("点击了提交");
+        e.preventDefault(); //在form表单里面，得阻止原生事件（表单提交）
+
+        if (checkbox.checked && username.value != '') {
+            let namekey = 'name';
+            let name = encodeURIComponent(username.value);
+            let lateTime = 5000;
+            document.cookie = `${namekey}=${name};max-age=${lateTime}`;
+
+            let passwordkey = 'password';
+            let password = encodeURIComponent(userpassword.value)
+            document.cookie = `${passwordkey}=${password};max-age=${lateTime}`;
+            console.log("提交成功");
+        }
+    });
+
+    document.querySelector(".local").addEventListener('click',e=>{
+        console.log("存储local");
+        localStorage.setItem("localKey","存储在localStorage")
+    })
+
+    document.querySelector(".session").addEventListener('click',e=>{
+        console.log("存储session");
+        sessionStorage.setItem("sessionKey","存储在sessionStorage")
+    })
+
+</script>
+
+</html>
