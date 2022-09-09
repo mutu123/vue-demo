@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+
+    let fnTime = function () {
+        console.log("打印");
+    }
+
+    setTimeout(fnTime, 2000);
+
+
+    let p = new Promise((resolve, reject) => setTimeout(resolve, 1000));
+
+    setTimeout(console.log, 2000, p)
+    console.log("p:", p)
+
+
+    let p1 = Promise.resolve("p1");
+    console.log("p1: ", p1);
+
+
+    try {
+        throw new Error('foo');
+    } catch (e) {
+        console.log(e);
+        // Error: foo   
+    }
+
+    try {
+        Promise.reject(new Error('bar'));
+    } catch (e) {
+        console.log(e);
+    }
+    //Uncaught(inpromise)Error: bar
+
+
+    new Promise((resolve, reject) => {
+        console.log('begin asynchronous execution');
+        reject(Error('bar'));
+    })
+        .catch((e) => { console.log('caught error', e); })
+        .then(() => { console.log('continue asynchronous execution'); })
+    // begin asynchronous execution
+    // caught error Error: bar
+    // continue asynchronous execution
+
+
+    function proAll() {
+        let p1 = Promise.all([
+            Promise.resolve()]);
+        console.log("pall1:", p1);
+        p1.then(() => console.log("pallthen1:", p1))
+        // 可迭代对象中的元素会通过Promise.resolve()转换为期约    
+        let p2 = Promise.all([3, 4]);
+        console.log("pall2:", p2);
+        // 空的可迭代对象等价于Promise.resolve()  
+        let p3 = Promise.all([]);
+        console.log("pall3:", p3);
+        // 无效的语法  
+        let p4 = Promise.all();
+        // TypeError: cannot read Symbol.iterator of undefined
+    }
+    proAll();
+
+    function proAll2() {
+        // 永远待定   
+        let p1 = Promise.all([new Promise(() => { })]);
+        setTimeout(console.log, 0, p1); // Promise <pending>  
+        // 一次拒绝会导致最终期约拒绝    
+        let p2 = Promise.all([
+            Promise.resolve(),
+            Promise.reject(),
+            Promise.resolve()
+        ]);
+        setTimeout(console.log, 0, p2); // Promise <rejected> 
+        // Uncaught (in promise) undefined
+    }
+    proAll2();
+
+    function proAll3() {
+        let p = Promise.all([
+            Promise.resolve(3),
+            Promise.reject(),
+            Promise.resolve(4)
+        ]);
+        p.then((values) => {
+            console.log("proAll3:values:", values);
+        }, err => {
+            console.log("proAll3:err:", err);
+        }); // [3, undefined, 4]
+    }
+    proAll3();
+
+
+    function proAll4() {
+        // 虽然只有第一个期约的拒绝理由会进入  
+        // 拒绝处理程序，第二个期约的拒绝也    
+        // 会被静默处理，不会有错误跑掉    
+        let p = Promise.all([
+            Promise.reject(3),
+            new Promise((resolve, reject) => setTimeout(reject, 1000))]);
+        p.catch((reason) => setTimeout(console.log, 0, reason)); // 3    // 没有未处理的错误
+    }
+    proAll4();
+
+    function proRace1() {
+        let p1 = Promise.race([
+            Promise.resolve(),
+            Promise.resolve()
+        ]);
+        // 可迭代对象中的元素会通过Promise.resolve()转换为期约  
+        let p2 = Promise.race([3, 4]);
+        // 空的可迭代对象等价于new Promise(() => {})    
+        let p3 = Promise.race([]);
+        // 无效的语法  
+        let p4 = Promise.race();
+        // TypeError: cannot read Symbol.iterator of undefined
+    }
+    proRace1()
+
+    function reduce(promise, fn) {
+        return (promise.then(fn), Promise.resolve(x))
+    }
+
+    
+    
+</script>
+
+</html>
