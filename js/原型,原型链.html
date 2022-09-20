@@ -74,6 +74,43 @@
         console.log("made 爱吃肉 ")
     }
     made.eat()
+
+
+
+    /**
+     * prototype 原型只有函数存在
+     * 原型链[[prototype]] 对象都有的
+     * 
+     * 原型的作用=> 可以被继承  new Function 的方式
+     * 
+     */ 
+    let obj = {}
+
+    console.log(obj);
+
+    let fn = function fn(){
+        let name = "fnName"
+        console.log("arguments:",arguments);
+    }
+    console.dir(fn);
+
+
+    /** 
+     * 通过new 来创建一个构造函数实例，实例会继承函数的原型，从而可以访问函数的属性
+     */
+    function Person(){
+        
+    }
+
+    Person.prototype.name = "name";
+    Person.prototype.age = 18;
+    let person = new Person();
+
+    console.log(person);
+    console.log(person.age);
+
+
+
 </script>
 
 </html>
