@@ -101,15 +101,29 @@
     function Person(){
         
     }
+    let person = new Person();
 
     Person.prototype.name = "name";
     Person.prototype.age = 18;
-    let person = new Person();
 
     console.log(person);
     console.log(person.age);
 
+    Person.prototype = {
+        constructor: Person,
+        name: "name2",
+        sayName (){
+            console.log(this.name);
+        }
+    }
 
+    console.log(person);
+    console.log(person.name);
+    console.log(person.constructor == Person);
+
+    let person1 = new Person();
+    console.log(person1);
+    console.log(person1.constructor == Person);
 
 </script>
 
