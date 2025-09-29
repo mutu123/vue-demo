@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input class="debonce" type="text" placeholder="防抖">
+    <br />
+    <br />
+    <input class="throttle" type="text" placeholder="节流">
+
+    <script>
+
+        //防抖
+        const text = document.querySelector(".debonce")
+        // text.addEventListener('input', function (e) {
+        //     debounce(setText(e.target.value), 500)
+        // })
+
+        const textfn = debounce(setText,500)
+        text.addEventListener('input', function(e){
+            textfn.call(this,e.target.value,"小明")
+        })
+
+        function debounce(fn, time) {
+            let timeOut = null
+
+            return function () {
+                let context = this;
+                let args = arguments;
+                // console.log("argument:",arguments);
+                if (timeOut) {
+                    clearTimeout(timeOut);
+                }
+
+                timeOut = setTimeout(() => {
+                    //args 是数组类型，apply 接受数组
+                    //如果是call 应该...args 展开
+                    fn.apply(this, args)
+                }, time);
+            }
+
+        }
+
+        function setText(content,name) {
+            console.log("setText this", this)
+            console.log("set text", `content: ${content} name:${name}`)
+        }
+
+
+        //节流
+        const thext2 = document.querySelector(".throttle");
+        thext2.addEventListener("input", throttle(setSend,2000))
+
+        function throttle(fn, wait) {
+            let timeOut = null
+            return function () {
+                let context = this;
+                let args = arguments;
+                if (!timeOut) {
+                    timeOut = setTimeout(() => {
+                        fn.call(context, args)
+                        timeOut = null
+                    }, wait);
+                }
+            }
+        }
+
+        function setSend() {
+            console.log("节流：", thext2.value);
+        }
+
+
+    </script>
+</body>
+
+</html>

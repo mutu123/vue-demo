@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        .box{
+        .box {
             width: 100px;
             height: 100px;
             background-color: aqua;
         }
     </style>
 </head>
+
 <body>
     <input placeholder="请输入电话">
     <div class="box"></div>
@@ -23,43 +25,65 @@
          * 
          */
         let telInput = document.querySelector('input')
-        telInput.addEventListener('input',antiShake(demo,2000))
 
+        const textFn = debounce(send, 500)
+        //监听事件
+        telInput.addEventListener('input', function (e) {
+            //会重复触发，确保这个函数不变
+            // 这样传递参数时，debounce 匿名函数的this 指向window,需要进行绑定
+            textFn.call(this,e.target.value)
+        })
+
+        //telInput.addEventListener('input',debounce(send,500))
+        //这里listener需要放置一直未执行的函数，才会一直被触发回调，如果执行就只会初次监听触发
+        //所以这里返回一个匿名函数，就会被一直触发；
         //防抖封装
-        function antiShake(fn, wait){
+        function debounce(fn, wait) {
             let timeOut = null;
-            return ()=>{
-                if(timeOut) clearTimeout(timeOut)
-                timeOut = setTimeout(fn, wait);
+            // console.log("antiShake:",timeOut);//只会在初次监听时候触发一次
+            return function () {
+                //let context = this; 使用箭头函数时不用
+                console.log("function:", timeOut, this);
+                let args = arguments;
+                if (timeOut) {
+                    clearTimeout(timeOut)
+                    //console.log("clearTimeout:",timeOut);
+                }
+                timeOut = setTimeout(() => {
+                    fn.call(this, ...args)
+                }, wait);
             }
         }
 
-        function demo(){
-            console.log("发起请求",telInput.value);
+        function send(content) {
+            console.log("send发起请求", `${telInput.value}，${content} this:${this}`);
         }
+
+        //防止内存泄漏 最后应该 removeEventListener
 
 
         /**
          * 节流 => 单位时间内只调用一次
          * 应用场景： 1: 表单防止多次提交
          *           2: 高频监听事件
-         */ 
+         */
         let box = document.querySelector(".box")
-        box.addEventListener("touchmove",move(touchMoveFu,2000))
+        box.addEventListener("touchmove", move(touchMoveFu, 2000))
 
-        function move(event,wait){
+        function move(event, wait) {
             let timeOut = null
-            return ()=>{
-                if(!timeOut){
+            return () => {
+                let args = arguments;
+                if (!timeOut) {
                     timeOut = setTimeout(() => {
-                    event();
-                    timeOut = null
-                }, wait);
-              }
+                        event();
+                        timeOut = null
+                    }, wait);
+                }
             }
         }
 
-        function touchMoveFu(){
+        function touchMoveFu() {
             console.log("移动事件。。。");
         }
 
